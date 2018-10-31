@@ -45,7 +45,7 @@ aws lambda create-function ^
 --memory-size 128
 ```
 
-aws cli s3 trigger add lambda invoke permission example: If this is not run first for the s3 trigger, the below shell script will fail. 
+aws cli s3 trigger add lambda invoke permission example: If this is not run first for the s3 trigger, the following shell script will fail. 
 ```sh
 aws lambda add-permission 
 --function-name arn:aws:lambda:us-east-2:868413670592:function:demo_lambda ^
