@@ -3,7 +3,7 @@ Process individual files and perform data normalization: s3->secrets manager->RD
 
 **Use Case:** Creating a serverless data pipeline using AWS Lambda to minimize overhead managing infrastructure and have code invoked only when new files arrive. This serves as a template starting point. Not all scripts may meet your use case. 
 
-**Technical Concept:** A lambda function is triggered when a new text file arrives in a s3 bucket. The file is checked for errors, parses the file name and concatenates it to the data, accesses secrets manager for Aurora PgSQL database credentials, exports normalized text "|" delimited file to s3 bucket, and inserts records into database with lambda function metadata for ETL transformation success/failure. Database and lambda function contained in the same VPC. Assumes VPC is configured to have lambda connect with Secrets Manager for http request. This demo works without a VPC.
+**Technical Concept:** A lambda function is triggered when a new text file arrives in a s3 bucket. The file is checked for errors, parses the file name and concatenates it to the data, accesses secrets manager for Aurora PgSQL database credentials, exports normalized text "|" delimited file to two directories in same s3 bucket(for batch and archival purposes), and inserts records into database with lambda function metadata for ETL transformation success/failure. Database and lambda function contained in the same VPC. Assumes VPC is configured to have lambda connect with Secrets Manager for http request. This demo works without a VPC.
 
 **Prerequisites:**
 * You have an AWS user account
@@ -17,7 +17,7 @@ Process individual files and perform data normalization: s3->secrets manager->RD
 * Note: shell scripting based on Windows cmd terminal(I know...I know...)
 
 **Deploy Instructions:** This will be done using the AWS CLI
-* Download folder structure in this repository to local desktop(should be in zip form)
+* Download src directory in this repository to local desktop(should be in zip form)
 * See example shell script below
 * Update "region"
 * Update "function-name"
@@ -45,7 +45,7 @@ aws lambda create-function ^
 --memory-size 128
 ```
 
-aws cli s3 trigger add lambda invoke permission example: If this is not run, the below shell script will fail. 
+aws cli s3 trigger add lambda invoke permission example: If this is not run first for the s3 trigger, the below shell script will fail. 
 ```sh
 aws lambda add-permission 
 --function-name arn:aws:lambda:us-east-2:868413670592:function:demo_lambda ^
