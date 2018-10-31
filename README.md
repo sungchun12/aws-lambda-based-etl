@@ -1,15 +1,15 @@
 # aws-lambda-based-etl
 Process individual files and perform data normalization: s3->secrets manager->RDS & s3
 
-**Use Case:** Creating a serverless data pipeline using AWS Lambda to minimize overhead managing infrastructure and have code invoked only when new files arrive. This serves as a template starting point.
+**Use Case:** Creating a serverless data pipeline using AWS Lambda to minimize overhead managing infrastructure and have code invoked only when new files arrive. This serves as a template starting point. Not all scripts may meet your use case. 
 
-**Technical Concept:** A lambda function is triggered when a new text file arrives in a s3 bucket. The file is checked for errors, parses the file name and concatenates it to the data, accesses secrets manager for Aurora PgSql database credentials, inserts records into database, exports normalized csv file to s3 bucket, and inserts records into database with lambda function metadata for ETL transformation success/failure. Database and lambda function contained in the same VPC. Assumes VPC is configured to have lambda connect with Secrets Manager for http request. This demo works without VPC. 
+**Technical Concept:** A lambda function is triggered when a new text file arrives in a s3 bucket. The file is checked for errors, parses the file name and concatenates it to the data, accesses secrets manager for Aurora PgSQL database credentials, exports normalized text "|" delimited file to s3 bucket, and inserts records into database with lambda function metadata for ETL transformation success/failure. Database and lambda function contained in the same VPC. Assumes VPC is configured to have lambda connect with Secrets Manager for http request. This demo works without a VPC.
 
 **Prerequisites:**
 * You have an AWS user account
 * You have an IAM role that can access S3, Secrets Manager, RDS, VPC
 * You have two s3 buckets ready for use
-* You have a Aurora PgSql database setup
+* You have a Aurora PgSQL database setup with empty table schema setup
 * You have Secrets Manager setup storing database credentials
 * AWS SDK locally installed for AWS CLI use
 * You're familiar with Python
@@ -51,8 +51,10 @@ aws s3api put-bucket-notification-configuration ^
 ```
 
 **Testing Instructions:**
-* Upload a file to your input bucket with example file: "F1M40D180706T071453_REVIEW_EX_NC"
-* Check output bucket for normalized file-should look like: "example_output.txt"
+* Upload a file to your input bucket with example file: ".../input_example/F1M40D180706T071453_ASDF_GH_NC.txt"
+  * Raw tab delimited file
+* Check output bucket for normalized file-should look like: ".../output_example/F1M40D180706T071453_ASDF_GH_NC.txt"
+  * Normalized "|" delimited file containing parsed file name columns
 
 **File Descriptions:**
 
@@ -60,7 +62,7 @@ psycopg2: module to interact with PgSQL databases
 
 global_env_variables.py: paramterized global environment variables for custom field names matching parsed file name, and secrets manager
 
-insert_to_pgsql_functions.py: python script containing UDFs that interact directly with PgSql database
+insert_to_pgsql_functions.py: python script containing UDFs that interact directly with PgSQL database
 
 mpabatchcycle-etl-lambda.py: main orchestrator containing lambda handler which calls upon other modules/scripts
 
