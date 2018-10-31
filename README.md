@@ -24,7 +24,8 @@ Process individual files and perform data normalization: s3->secrets manager->RD
 * Update "zip-file fileb://" with the file path of downloaded zip file
 * Update "role" with IAM role
 * Update "environment Variables"
-* Run "XYZ" shell script(can likely double click file after saving if on Windows)
+* Copy and paste shell script into Windows cmd prompt(or linux terminal with appropriate syntax)
+* Run shell script
 * Go to AWS lambda console to verify function creation: https://console.aws.amazon.com/lambda/home
 * Manually add s3 trigger for putObject for your input bucket
   * For AWS CLI based way to create s3 trigger: https://stackoverflow.com/questions/39190442/how-do-i-add-trigger-to-an-aws-lambda-function-using-aws-cli
@@ -70,6 +71,6 @@ process_file_functions.py: python script containing UDFs that perform ETL operat
 
 s3_functions.py: python script containing UDFs that interact with s3
 
-
+**Note:** This code base has been sanitized for template-like use. You'll notice more custom logic around normalizing the s3 object key due to business logic outside the scope of discussion for demo purposes. This isn't something you should blindly git clone and deploy for your use case. Please read through the code and translate the needed components.
 
 
