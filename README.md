@@ -48,7 +48,7 @@ aws lambda create-function ^
 aws cli s3 trigger add lambda invoke permission example: If this is not run first for the s3 trigger, the following shell script will fail. 
 ```sh
 aws lambda add-permission 
---function-name arn:aws:lambda:us-east-2:868413670592:function:demo_lambda ^
+--function-name arn:aws:lambda:us-east-2:12345567:function:demo_lambda ^
 --statement-id "invoke_lambda_permission" ^
 --action "lambda:InvokeFunction" ^
 --principal s3.amazonaws.com --source-arn "arn:aws:s3:::input-bucket" ^
@@ -58,7 +58,7 @@ aws lambda add-permission
 aws cli s3 trigger deploy example:
 ```sh
 aws s3api put-bucket-notification-configuration ^
---bucket ss-incoming-test-sung ^
+--bucket input_bucket ^
 --notification-configuration fileb://C:/Users/test_user/Desktop/s3_notification.json 
 ```
 
