@@ -1,0 +1,19 @@
+{
+"LambdaFunctionConfigurations": [
+    {
+      "Id": "s3eventtriggerslambda",
+      "LambdaFunctionArn": "arn:aws:lambda:us-east-2:868413670592:function:demo_sung",
+      "Events": ["s3:ObjectCreated:*"],
+      "Filter": {
+        "Key": {
+          "FilterRules": [
+            {
+              "Name": "prefix",
+              "Value": "demo/Local_Data"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}
