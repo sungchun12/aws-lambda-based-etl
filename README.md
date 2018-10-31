@@ -27,23 +27,34 @@ Process individual files and perform data normalization: s3->secrets manager->RD
 * Copy and paste shell script into Windows cmd prompt(or linux terminal with appropriate syntax)
 * Run shell script
 * Go to AWS lambda console to verify function creation: https://console.aws.amazon.com/lambda/home
-* Manually add s3 trigger for putObject for your input bucket
-  * For AWS CLI based way to create s3 trigger: https://stackoverflow.com/questions/39190442/how-do-i-add-trigger-to-an-aws-lambda-function-using-aws-cli
+* Manually add s3 trigger for ObjectCreated for your input bucket
+  * For AWS CLI based way to create s3 trigger: see example shell scripts below
   
 aws cli lambda deploy example:
 ```sh
 aws lambda create-function ^
 --region us-east-2 ^
---function-name test_lambda ^
+--function-name demo_lambda ^
 --zip-file fileb://C:/Users/test_user/Desktop/test.zip ^
 --role arn:aws:iam::12345567:role/lambda_basic_execution ^
 --handler lambda_handler.handler ^
 --runtime python2.7 ^
 --timeout 5 ^
 --environment Variables={NC_NAMES="field_1|field_2|field_3|field_4|field_5|field_6|field_7|field_8",OUTPUT_BUCKET="input_bucket",SECRET_NAME="test",ENDPOINT_URL="https://secretsmanager.us-east-2.amazonaws.com",REGION_NAME="us-east-2"} ^
---description "test lambda function" ^
+--description "demo lambda function" ^
 --memory-size 128
 ```
+
+aws cli s3 trigger add lambda invoke permission example:
+```sh
+aws lambda add-permission 
+--function-name arn:aws:lambda:us-east-2:868413670592:function:demo_lambda ^
+--statement-id "invoke_lambda_permission" ^
+--action "lambda:InvokeFunction" ^
+--principal s3.amazonaws.com --source-arn "arn:aws:s3:::input-bucket" ^
+--source-account 1234567890
+```
+
 aws cli s3 trigger deploy example:
 ```sh
 aws s3api put-bucket-notification-configuration ^
@@ -58,6 +69,10 @@ aws s3api put-bucket-notification-configuration ^
   * Normalized "|" delimited file containing parsed file name columns
 
 **File Descriptions:**
+
+s3_notification.json: configuration to programatically add s3 trigger to lambda function
+
+within ".../src/"
 
 psycopg2: module to interact with PgSQL databases
 
