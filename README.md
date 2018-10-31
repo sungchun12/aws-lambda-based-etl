@@ -28,7 +28,7 @@ Process individual files and perform data normalization: s3->secrets manager->RD
 * Run shell script
 * Go to AWS lambda console to verify function creation: https://console.aws.amazon.com/lambda/home
 * Manually add s3 trigger for ObjectCreated for your input bucket
-  * For AWS CLI based way to create s3 trigger: see example shell scripts below
+  * For AWS CLI based way to create s3 trigger: see example shell scripts below and replace parameters as needed
   
 aws cli lambda deploy example:
 ```sh
@@ -45,7 +45,7 @@ aws lambda create-function ^
 --memory-size 128
 ```
 
-aws cli s3 trigger add lambda invoke permission example:
+aws cli s3 trigger add lambda invoke permission example: If this is not run, the below shell script will fail. 
 ```sh
 aws lambda add-permission 
 --function-name arn:aws:lambda:us-east-2:868413670592:function:demo_lambda ^
