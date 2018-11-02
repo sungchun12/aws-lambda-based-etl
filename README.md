@@ -51,7 +51,7 @@ aws lambda add-permission
 --function-name arn:aws:lambda:us-east-2:12345567:function:demo_lambda ^
 --statement-id "invoke_lambda_permission" ^
 --action "lambda:InvokeFunction" ^
---principal s3.amazonaws.com --source-arn "arn:aws:s3:::input-bucket" ^
+--principal s3.amazonaws.com --source-arn "arn:aws:s3:::input_bucket" ^
 --source-account 1234567890
 ```
 
